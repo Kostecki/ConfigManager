@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 
 import { MonacoEditor } from "monaco-editor";
 import {
@@ -10,6 +10,7 @@ import {
   TableCell,
   TableRow,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -19,22 +20,33 @@ const Row = (props: {
   project: Project;
   editProjectHandler: () => void;
   deleteProjectHandler: () => void;
-  openProjectHandler: Dispatch<SetStateAction<Project | undefined>>;
   handleEditorDidMount: (editor: MonacoEditor) => void;
   saveConfigHandler: () => void;
+  isSaving: boolean;
 }) => {
   const {
     project,
     editProjectHandler,
     deleteProjectHandler,
-    openProjectHandler,
     handleEditorDidMount,
     saveConfigHandler,
+    isSaving,
   } = props;
+  const [isLoading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const keysLength = project.configs.length;
+  const [configs, setConfigs] = useState<Config[]>();
 
-  openProjectHandler(project);
+  useEffect(() => {
+    if (open) {
+      setLoading(true);
+      fetch(`/api/projects/${project.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setLoading(false);
+          setConfigs(data.configs);
+        });
+    }
+  }, [open, project.id]);
 
   return (
     <>
@@ -46,14 +58,13 @@ const Row = (props: {
         hover
         onClick={() => setOpen(!open)}
       >
-        <TableCell component="th">{project.projectName}</TableCell>
-        <TableCell component="th">{keysLength}</TableCell>
+        <TableCell component="th">{project.name}</TableCell>
         <TableCell component="th">
           <Link href={project.githubLink} target="_blank">
             {project.githubLink}
           </Link>
         </TableCell>
-        <TableCell>{project.lastSeen}</TableCell>
+        <TableCell>{project.lastSeen ?? "-"}</TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
           <IconButton onClick={editProjectHandler}>
             <ModeEditIcon />
@@ -81,8 +92,9 @@ const Row = (props: {
               autoComplete="off"
             >
               <Editor
-                value={JSON.stringify(project.configs)}
+                value={JSON.stringify(configs)}
                 handleEditorDidMount={handleEditorDidMount}
+                isLoading={isLoading}
               />
             </Box>
             <Box
@@ -93,9 +105,13 @@ const Row = (props: {
                 pb: 3,
               }}
             >
-              <Button variant="contained" onClick={saveConfigHandler}>
+              <LoadingButton
+                loading={isSaving}
+                variant="contained"
+                onClick={saveConfigHandler}
+              >
                 Save Config
-              </Button>
+              </LoadingButton>
             </Box>
           </Collapse>
         </TableCell>

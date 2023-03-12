@@ -1,6 +1,21 @@
+import { useState, useRef } from "react";
 import MonacoEditor, { loader, OnMount } from "@monaco-editor/react";
 
-const Editor = (props: { value: string; handleEditorDidMount: OnMount }) => {
+import {
+  MonacoEditor as IMonacoEditor,
+  Monaco as IMonaco,
+} from "monaco-editor";
+
+const Editor = (props: {
+  value: string;
+  handleEditorDidMount: OnMount;
+  isLoading: boolean;
+}) => {
+  const { value, handleEditorDidMount, isLoading } = props;
+
+  const [firstLoad, setFirstLoad] = useState(true);
+  let editorRef = useRef<IMonacoEditor>();
+
   loader
     .init()
     .then((monaco) => {
@@ -24,14 +39,14 @@ const Editor = (props: { value: string; handleEditorDidMount: OnMount }) => {
                   value: {
                     type: ["string", "integer"],
                   },
-                  category: {
-                    type: "integer",
-                  },
                   enabled: {
                     type: "boolean",
                   },
+                  projectId: {
+                    type: "number",
+                  },
                 },
-                required: ["label", "key", "value", "category", "enabled"],
+                required: ["label", "key", "value", "enabled", "projectId"],
               },
             },
           },
@@ -45,15 +60,35 @@ const Editor = (props: { value: string; handleEditorDidMount: OnMount }) => {
       )
     );
 
+  const onMountHandler = (editor: IMonacoEditor, monaco: IMonaco) => {
+    editorRef.current = editor;
+    handleEditorDidMount(editor, monaco);
+  };
+
+  const onChangeHandler = () => {
+    if (firstLoad) {
+      setFirstLoad(false);
+      setTimeout(() => {
+        if (editorRef.current) {
+          editorRef.current.getAction("editor.action.formatDocument")?.run();
+        }
+      }, 100);
+    }
+  };
+
   return (
     <MonacoEditor
+      loading={isLoading}
       height="50vh"
-      value={props.value}
+      value={value}
       language="json"
       options={{
         minimap: { enabled: false },
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
       }}
-      onMount={props.handleEditorDidMount}
+      onMount={onMountHandler}
+      onChange={onChangeHandler}
     />
   );
 };
