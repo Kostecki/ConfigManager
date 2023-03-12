@@ -1,9 +1,8 @@
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import { MonacoEditor } from "monaco-editor";
 import {
   Box,
-  Button,
   Collapse,
   IconButton,
   Link,
@@ -18,7 +17,7 @@ import Editor from "./Editor";
 
 const Row = (props: {
   project: Project;
-  editProjectHandler: () => void;
+  setShowProjectDialog: Dispatch<SetStateAction<boolean>>;
   deleteProjectHandler: () => void;
   handleEditorDidMount: (editor: MonacoEditor) => void;
   saveConfigHandler: () => void;
@@ -26,7 +25,7 @@ const Row = (props: {
 }) => {
   const {
     project,
-    editProjectHandler,
+    setShowProjectDialog,
     deleteProjectHandler,
     handleEditorDidMount,
     saveConfigHandler,
@@ -35,6 +34,13 @@ const Row = (props: {
   const [isLoading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [configs, setConfigs] = useState<Config[]>();
+
+  const rowClick = (event: any) => {
+    const blacklistedTags = ["A", "path", "svg"];
+    if (!blacklistedTags.includes(event.target.tagName)) {
+      setOpen(!open);
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -56,7 +62,7 @@ const Row = (props: {
           "&:hover": { cursor: "pointer" },
         }}
         hover
-        onClick={() => setOpen(!open)}
+        onClick={rowClick}
       >
         <TableCell component="th">{project.name}</TableCell>
         <TableCell component="th">
@@ -66,7 +72,7 @@ const Row = (props: {
         </TableCell>
         <TableCell>{project.lastSeen ?? "-"}</TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
-          <IconButton onClick={editProjectHandler}>
+          <IconButton onClick={(event) => setShowProjectDialog(true)}>
             <ModeEditIcon />
           </IconButton>
         </TableCell>

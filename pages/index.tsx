@@ -20,11 +20,16 @@ import {
 } from "@mui/material";
 
 import Row from "@/components/Row";
+import ProjectDialog from "@/components/ProjectDialog";
 
 export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [tableData, setTableData] = useState<Project[]>([]);
+
+  const [showProjectDialog, setShowProjectDialog] = useState(false);
+  const [editProject, setEditProject] = useState<Project>();
+
   const [snackbar, setSnackbar] = useState({
     message: "",
     display: false,
@@ -32,16 +37,40 @@ export default function Home() {
 
   let currentEditorRef = useRef<MonacoEditor>();
 
-  const editProjectHandler = () => {
-    console.log("Click, editProjectHandler");
+  const fetchProjects = () => {
+    setLoading(true);
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setTableData(data);
+      });
+  };
+
+  const editProjectHandler = (project: Project) => {
+    console.log("Click, editProjectHandler", project);
   };
 
   const deleteProjectHandler = () => {
     console.log("Click, deleteProjectHandler");
   };
 
-  const newProjectHandler = () => {
-    console.log("Click, newProjectHandler");
+  const createProjectHandler = (project: Project) => {
+    fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(project),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setShowProjectDialog(false);
+        setSnackbar({
+          message: "Project created",
+          display: true,
+        });
+      });
   };
 
   const saveConfigHandler = () => {
@@ -70,13 +99,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/api/projects")
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setTableData(data);
-      });
+    fetchProjects();
   }, []);
 
   return (
@@ -92,7 +115,10 @@ export default function Home() {
       </Head>
       <Container className={styles.main}>
         <Box sx={{ my: 4, display: "flex", justifyContent: "right" }}>
-          <Button variant="contained" onClick={newProjectHandler}>
+          <Button
+            variant="contained"
+            onClick={() => setShowProjectDialog(true)}
+          >
             New Project
           </Button>
         </Box>
@@ -113,7 +139,7 @@ export default function Home() {
                   <Row
                     key={project.id}
                     project={project}
-                    editProjectHandler={editProjectHandler}
+                    setShowProjectDialog={setShowProjectDialog}
                     deleteProjectHandler={deleteProjectHandler}
                     handleEditorDidMount={handleEditorDidMount}
                     saveConfigHandler={saveConfigHandler}
@@ -129,6 +155,15 @@ export default function Home() {
           )}
         </TableContainer>
       </Container>
+
+      <ProjectDialog
+        open={showProjectDialog}
+        setShowProjectDialog={setShowProjectDialog}
+        createProjectHandler={createProjectHandler}
+        editProject={editProject}
+        editProjectHandler={editProjectHandler}
+      />
+
       <Snackbar
         open={snackbar.display}
         autoHideDuration={6000}

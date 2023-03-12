@@ -12,6 +12,7 @@ export default async function handle(
     return res.json(projects);
   } else if (req.method === "POST") {
     // Create project
+    console.log(req.body);
     const { name, githubLink } = req.body;
     const result = await prisma.project.create({
       data: {
