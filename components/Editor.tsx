@@ -78,9 +78,8 @@ const Editor = (props: {
 
   return (
     <MonacoEditor
-      loading={isLoading}
       height="50vh"
-      value={value}
+      value={isLoading ? "Loading content.." : value}
       language="json"
       options={{
         minimap: { enabled: false },

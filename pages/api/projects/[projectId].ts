@@ -40,9 +40,54 @@ export default async function handle(
     }
   } else if (req.method === "PUT") {
     // Update  project
-    return res.json({ message: "Method not implemented" });
+    const inputProject = JSON.parse(req.body);
+
+    if (inputProject.id) {
+      try {
+        const updateProject = await prisma.project.update({
+          where: {
+            id: inputProject.id,
+          },
+          data: inputProject,
+        });
+
+        return res.json(updateProject);
+      } catch (e: any) {
+        if (e.code === "P2025") {
+          return res.json([]);
+        } else {
+          return res.json({
+            errorMsg: "Something went wrong 🤷‍♂️",
+          });
+        }
+      }
+    } else {
+      res.status(400).json({ msg: "A project id is required" });
+    }
   } else if (req.method === "DELETE") {
     // Delete project
-    return res.json({ message: "Method not implemented" });
+    const projectId = req.query.projectId as string;
+
+    if (projectId) {
+      try {
+        const deleteProject = await prisma.project.delete({
+          where: {
+            id: parseInt(projectId),
+          },
+        });
+
+        res.json(deleteProject);
+      } catch (e: any) {
+        if (e.code === "P2025") {
+          return res.json([]);
+        } else {
+          return res.json({
+            errorMsg: "Something went wrong 🤷‍♂️",
+          });
+        }
+      }
+    } else {
+      res.status(400).json({ msg: "A project id is required" });
+    }
   }
 }

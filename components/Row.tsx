@@ -18,7 +18,8 @@ import Editor from "./Editor";
 const Row = (props: {
   project: Project;
   setShowProjectDialog: Dispatch<SetStateAction<boolean>>;
-  deleteProjectHandler: () => void;
+  setSelectedProject: Dispatch<SetStateAction<Project | undefined>>;
+  deleteProjectHandler: (project: Project) => void;
   handleEditorDidMount: (editor: MonacoEditor) => void;
   saveConfigHandler: () => void;
   isSaving: boolean;
@@ -26,6 +27,7 @@ const Row = (props: {
   const {
     project,
     setShowProjectDialog,
+    setSelectedProject,
     deleteProjectHandler,
     handleEditorDidMount,
     saveConfigHandler,
@@ -40,6 +42,11 @@ const Row = (props: {
     if (!blacklistedTags.includes(event.target.tagName)) {
       setOpen(!open);
     }
+  };
+
+  const editClick = () => {
+    setSelectedProject(project);
+    setShowProjectDialog(true);
   };
 
   useEffect(() => {
@@ -72,12 +79,12 @@ const Row = (props: {
         </TableCell>
         <TableCell>{project.lastSeen ?? "-"}</TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
-          <IconButton onClick={(event) => setShowProjectDialog(true)}>
+          <IconButton onClick={editClick}>
             <ModeEditIcon />
           </IconButton>
         </TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
-          <IconButton onClick={deleteProjectHandler}>
+          <IconButton onClick={() => deleteProjectHandler(project)}>
             <DeleteIcon />
           </IconButton>
         </TableCell>

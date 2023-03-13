@@ -12,15 +12,17 @@ import {
 export default function CreateProjectDialog(props: {
   open: boolean;
   setShowProjectDialog: Dispatch<SetStateAction<boolean>>;
+  setSelectedProject: Dispatch<SetStateAction<Project | undefined>>;
   createProjectHandler: (project: Project) => void;
-  editProject?: Project;
+  selectedProject?: Project;
   editProjectHandler: (project: Project) => void;
 }) {
   const {
     open,
     setShowProjectDialog,
+    setSelectedProject,
     createProjectHandler,
-    editProject,
+    selectedProject,
     editProjectHandler,
   } = props;
 
@@ -28,11 +30,8 @@ export default function CreateProjectDialog(props: {
   const [githubLink, setGithubLink] = useState("");
 
   const saveHandler = () => {
-    if (editProject) {
-      editProjectHandler({
-        name,
-        githubLink,
-      });
+    if (selectedProject) {
+      editProjectHandler({ ...selectedProject, name, githubLink });
     } else {
       createProjectHandler({
         name,
@@ -45,14 +44,14 @@ export default function CreateProjectDialog(props: {
     setName("");
     setGithubLink("");
 
+    setSelectedProject(undefined);
     setShowProjectDialog(false);
   };
 
   useEffect(() => {
-    if (open) {
-      console.log("balls", editProject);
-    }
-  }, [open, editProject]);
+    setName(selectedProject?.name ?? "");
+    setGithubLink(selectedProject?.githubLink ?? "");
+  }, [selectedProject]);
 
   return (
     <Dialog open={open} onClose={closeHandler}>

@@ -28,7 +28,7 @@ export default function Home() {
   const [tableData, setTableData] = useState<Project[]>([]);
 
   const [showProjectDialog, setShowProjectDialog] = useState(false);
-  const [editProject, setEditProject] = useState<Project>();
+  const [selectedProject, setSelectedProject] = useState<Project>();
 
   const [snackbar, setSnackbar] = useState({
     message: "",
@@ -48,11 +48,34 @@ export default function Home() {
   };
 
   const editProjectHandler = (project: Project) => {
-    console.log("Click, editProjectHandler", project);
+    fetch(`/api/projects/${project.id}`, {
+      method: "PUT",
+      body: JSON.stringify(project),
+    }).then((res) =>
+      res.json().then(() => {
+        setShowProjectDialog(false);
+        fetchProjects();
+        setSnackbar({
+          message: "Project updated",
+          display: true,
+        });
+      })
+    );
   };
 
-  const deleteProjectHandler = () => {
-    console.log("Click, deleteProjectHandler");
+  const deleteProjectHandler = (project: Project) => {
+    fetch(`/api/projects/${project.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setShowProjectDialog(false);
+        fetchProjects();
+        setSnackbar({
+          message: "Project deleted",
+          display: true,
+        });
+      });
   };
 
   const createProjectHandler = (project: Project) => {
@@ -66,6 +89,8 @@ export default function Home() {
       .then((res) => res.json())
       .then(() => {
         setShowProjectDialog(false);
+        setSelectedProject(undefined);
+        fetchProjects();
         setSnackbar({
           message: "Project created",
           display: true,
@@ -140,6 +165,7 @@ export default function Home() {
                     key={project.id}
                     project={project}
                     setShowProjectDialog={setShowProjectDialog}
+                    setSelectedProject={setSelectedProject}
                     deleteProjectHandler={deleteProjectHandler}
                     handleEditorDidMount={handleEditorDidMount}
                     saveConfigHandler={saveConfigHandler}
@@ -159,8 +185,9 @@ export default function Home() {
       <ProjectDialog
         open={showProjectDialog}
         setShowProjectDialog={setShowProjectDialog}
+        setSelectedProject={setSelectedProject}
         createProjectHandler={createProjectHandler}
-        editProject={editProject}
+        selectedProject={selectedProject}
         editProjectHandler={editProjectHandler}
       />
 
