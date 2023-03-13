@@ -9,6 +9,9 @@ const encrypt = (message: string) => {
   return CryptoJS.AES.encrypt(message, secret).toString();
 };
 const decrypt = (cipher: string) => {
+  if (secret) {
+    console.error("Secret is not set");
+  }
   const bytes = CryptoJS.AES.decrypt(cipher, secret);
   const decrypted = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   return decrypted;
