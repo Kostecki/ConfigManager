@@ -15,6 +15,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import Editor from "./Editor";
 import DeleteDialog from "@/components/DeleteDialog";
+import { decrypt } from "@/lib/aes";
+import CryptoJS from "crypto-js";
 
 const Row = (props: {
   project: Project;
@@ -59,8 +61,9 @@ const Row = (props: {
       fetch(`/api/projects/${project.id}`)
         .then((res) => res.json())
         .then((data) => {
+          const decryptedData = decrypt(data.config);
           setLoading(false);
-          setConfigs(data.configs);
+          setConfigs(decryptedData);
         });
     }
   }, [open, project.id]);

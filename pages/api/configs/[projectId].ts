@@ -1,12 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { encrypt } from "@/lib/aes";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    // Get project
+    // Get project configs
     const projectId = req.query.projectId as string;
 
     if (projectId) {
@@ -16,7 +17,9 @@ export default async function handle(
         },
       });
 
-      return res.json(config);
+      const cipherText = encrypt(JSON.stringify(config));
+
+      return res.send(cipherText);
     } else {
       res.status(400).json({ msg: "A project id is required" });
     }

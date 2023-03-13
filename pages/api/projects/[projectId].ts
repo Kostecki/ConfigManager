@@ -1,3 +1,4 @@
+import { encrypt } from "@/lib/aes";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
@@ -23,7 +24,8 @@ export default async function handle(
           },
         });
 
-        const payload = { ...project, configs };
+        const cipherText = encrypt(JSON.stringify(configs));
+        const payload = { ...project, config: cipherText };
 
         return res.json(payload);
       } catch (e: any) {
