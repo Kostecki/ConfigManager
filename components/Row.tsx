@@ -14,28 +14,32 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import Editor from "./Editor";
+import DeleteDialog from "@/components/DeleteDialog";
 
 const Row = (props: {
   project: Project;
   setShowProjectDialog: Dispatch<SetStateAction<boolean>>;
   setSelectedProject: Dispatch<SetStateAction<Project | undefined>>;
-  deleteProjectHandler: (project: Project) => void;
   handleEditorDidMount: (editor: MonacoEditor) => void;
   saveConfigHandler: () => void;
+  fetchProjects: () => void;
+  setSnackbar: Dispatch<SetStateAction<{ message: string; display: boolean }>>;
   isSaving: boolean;
 }) => {
   const {
     project,
     setShowProjectDialog,
     setSelectedProject,
-    deleteProjectHandler,
     handleEditorDidMount,
     saveConfigHandler,
+    fetchProjects,
+    setSnackbar,
     isSaving,
   } = props;
   const [isLoading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [configs, setConfigs] = useState<Config[]>();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const rowClick = (event: any) => {
     const blacklistedTags = ["A", "path", "svg"];
@@ -84,7 +88,7 @@ const Row = (props: {
           </IconButton>
         </TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
-          <IconButton onClick={() => deleteProjectHandler(project)}>
+          <IconButton onClick={() => setShowDeleteDialog(true)}>
             <DeleteIcon />
           </IconButton>
         </TableCell>
@@ -129,6 +133,14 @@ const Row = (props: {
           </Collapse>
         </TableCell>
       </TableRow>
+
+      <DeleteDialog
+        open={showDeleteDialog}
+        project={project}
+        setShowDeleteDialog={setShowDeleteDialog}
+        fetchProjects={fetchProjects}
+        setSnackbar={setSnackbar}
+      />
     </>
   );
 };

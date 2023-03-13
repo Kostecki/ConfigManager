@@ -166,9 +166,10 @@ export default function Home() {
                     project={project}
                     setShowProjectDialog={setShowProjectDialog}
                     setSelectedProject={setSelectedProject}
-                    deleteProjectHandler={deleteProjectHandler}
                     handleEditorDidMount={handleEditorDidMount}
                     saveConfigHandler={saveConfigHandler}
+                    fetchProjects={fetchProjects}
+                    setSnackbar={setSnackbar}
                     isSaving={isSaving}
                   />
                 ))}
