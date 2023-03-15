@@ -16,6 +16,7 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+RUN npm i -g prisma
 RUN prisma generate
 
 # Rebuild the source code only when needed
