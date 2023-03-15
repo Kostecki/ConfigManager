@@ -44,8 +44,7 @@ jobs:
           context: .
           push: true
           secrets: |
-            "NEXT_PUBLIC_ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}"
-            "DATABASE_URL=${{ secrets.DB_URL }}"
+            "SECRETS=${{ secrets.SECRETS }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
