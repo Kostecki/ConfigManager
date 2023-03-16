@@ -17,9 +17,9 @@ export default async function handle(
         },
       });
 
-      const cipherText = encrypt(JSON.stringify(config));
+      // const cipherText = encrypt(JSON.stringify(config));
 
-      return res.send(cipherText);
+      return res.send(config);
     } else {
       res.status(400).json({ msg: "A project id is required" });
     }

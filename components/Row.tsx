@@ -61,9 +61,9 @@ const Row = (props: {
       fetch(`/api/projects/${project.id}`)
         .then((res) => res.json())
         .then((data) => {
-          const decryptedData = decrypt(data.config);
+          // const decryptedData = decrypt(data.config);
           setLoading(false);
-          setConfigs(decryptedData);
+          setConfigs(data.config);
         });
     }
   }, [open, project.id]);

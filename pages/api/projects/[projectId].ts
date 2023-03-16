@@ -24,8 +24,8 @@ export default async function handle(
           },
         });
 
-        const cipherText = encrypt(JSON.stringify(configs));
-        const payload = { ...project, config: cipherText };
+        // const cipherText = encrypt(JSON.stringify(configs));
+        const payload = { ...project, config: configs };
 
         return res.json(payload);
       } catch (e: any) {
