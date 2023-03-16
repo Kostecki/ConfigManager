@@ -7,6 +7,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    console.log(req.headers);
     // Get project configs
     const projectId = req.query.projectId as string;
 
@@ -17,8 +18,21 @@ export default async function handle(
         },
       });
 
-      // const cipherText = encrypt(JSON.stringify(config));
+      if (req.headers["update-last-seen"]) {
+        const shouldUpdate = Boolean(req.headers["update-last-seen"]);
+        if (shouldUpdate) {
+          await prisma.project.update({
+            where: {
+              id: parseInt(projectId),
+            },
+            data: {
+              lastSeen: new Date(),
+            },
+          });
+        }
+      }
 
+      // const cipherText = encrypt(JSON.stringify(config));
       return res.send(config);
     } else {
       res.status(400).json({ msg: "A project id is required" });
