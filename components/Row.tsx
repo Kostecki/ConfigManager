@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
+import dayjs from "dayjs";
 import { MonacoEditor } from "monaco-editor";
 import {
   Box,
@@ -84,7 +85,9 @@ const Row = (props: {
             {project.githubLink}
           </Link>
         </TableCell>
-        <TableCell>{project.lastSeen ?? "-"}</TableCell>
+        <TableCell>
+          {dayjs(project.lastSeen).format("DD-MM-YYYY, HH:mm") ?? "-"}
+        </TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
           <IconButton onClick={editClick}>
             <ModeEditIcon />
