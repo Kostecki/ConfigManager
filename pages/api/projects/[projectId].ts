@@ -30,6 +30,7 @@ export default async function handle(
         return res.json(payload);
       } catch (e: any) {
         if (e.code === "P2025") {
+          // "An operation failed because it depends on one or more records that were required but not found. {cause}"
           return res.json([]);
         } else {
           return res.json({
@@ -56,6 +57,7 @@ export default async function handle(
         return res.json(updateProject);
       } catch (e: any) {
         if (e.code === "P2025") {
+          // "An operation failed because it depends on one or more records that were required but not found. {cause}"
           return res.json([]);
         } else {
           return res.json({
@@ -81,6 +83,7 @@ export default async function handle(
         res.json(deleteProject);
       } catch (e: any) {
         if (e.code === "P2025") {
+          // "An operation failed because it depends on one or more records that were required but not found. {cause}"
           return res.json([]);
         } else {
           return res.json({
