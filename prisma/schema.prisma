@@ -25,5 +25,5 @@ model Project {
   githubLink String?   @db.VarChar(255)
   lastSeen   DateTime? @db.DateTime(0)
   Config     Config[]
-  voltage    Float?    @db.Float() 
+  deviceVoltage    Float?    @db.Float() 
 }

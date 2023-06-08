@@ -14,4 +14,5 @@ interface Project {
   githubLink: string;
   lastSeen?: string;
   configs?: Config[];
+  deviceVoltage?: number;
 }

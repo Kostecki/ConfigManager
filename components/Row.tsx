@@ -56,6 +56,14 @@ const Row = (props: {
     setShowProjectDialog(true);
   };
 
+  const showVoltage = () => {
+    if (project.deviceVoltage) {
+      return `${project.deviceVoltage.toLocaleString()} V`;
+    } else {
+      return "-";
+    }
+  };
+
   useEffect(() => {
     if (open) {
       setLoading(true);
@@ -88,6 +96,7 @@ const Row = (props: {
         <TableCell>
           {dayjs(project.lastSeen).format("DD-MM-YYYY, HH:mm") ?? "-"}
         </TableCell>
+        <TableCell>{showVoltage()}</TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
           <IconButton onClick={editClick}>
             <ModeEditIcon />

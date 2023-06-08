@@ -183,6 +183,7 @@ export default function Home() {
                 <TableCell>Project</TableCell>
                 <TableCell>Github</TableCell>
                 <TableCell>Last Fetch</TableCell>
+                <TableCell>Device Voltage</TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>
               </TableRow>
