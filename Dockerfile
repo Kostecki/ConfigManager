@@ -25,12 +25,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Create .env file with SECRETS required for building
-# NEXT_PUBLIC_ENCRYPTION_KEY=
-# DATABASE_URL=
-RUN --mount=type=secret,id=SECRETS \
-  cat /run/secrets/SECRETS >> .env
-
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
