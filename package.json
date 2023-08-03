@@ -16,7 +16,7 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/lab": "^5.0.0-alpha.122",
     "@mui/material": "^5.14.3",
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "^5.1.1",
     "@types/node": "^20.4.6",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
@@ -29,7 +29,7 @@
     "typescript": "^5.1.6"
   },
   "devDependencies": {
-    "prettier": "^2.8.8",
-    "prisma": "^4.15.0"
+    "prettier": "^3.0.1",
+    "prisma": "^5.1.1"
   }
 }
