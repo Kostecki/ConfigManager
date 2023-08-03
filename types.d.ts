@@ -1,4 +1,5 @@
 interface Config {
+  [key: string]: any;
   id?: number;
   projectId?: number;
   label: string;

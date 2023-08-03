@@ -1,9 +1,6 @@
-import { useEffect, useState, useRef } from "react";
-
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-
-import { MonacoEditor } from "monaco-editor";
 import {
   Box,
   Button,
@@ -18,13 +15,11 @@ import {
   LinearProgress,
   Snackbar,
 } from "@mui/material";
-
 import Row from "@/components/Row";
 import ProjectDialog from "@/components/ProjectDialog";
 
 export default function Home() {
   const [isLoading, setLoading] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [tableData, setTableData] = useState<Project[]>([]);
 
   const [showProjectDialog, setShowProjectDialog] = useState(false);
@@ -34,8 +29,6 @@ export default function Home() {
     message: "",
     display: false,
   });
-
-  let currentEditorRef = useRef<MonacoEditor>();
 
   const fetchProjects = () => {
     setLoading(true);
@@ -96,31 +89,6 @@ export default function Home() {
           display: true,
         });
       });
-  };
-
-  const saveConfigHandler = () => {
-    if (currentEditorRef.current) {
-      setIsSaving(true);
-      fetch("/api/configs", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: currentEditorRef.current.getValue(),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          setIsSaving(false);
-          setSnackbar({
-            message: "Configs saved successfully",
-            display: true,
-          });
-        });
-    }
-  };
-
-  const handleEditorDidMount = (editor: MonacoEditor) => {
-    currentEditorRef.current = editor;
   };
 
   useEffect(() => {
@@ -184,6 +152,7 @@ export default function Home() {
                 <TableCell>Github</TableCell>
                 <TableCell>Last Fetch</TableCell>
                 <TableCell>Device Voltage</TableCell>
+                <TableCell>JSON</TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>
               </TableRow>
@@ -196,11 +165,8 @@ export default function Home() {
                     project={project}
                     setShowProjectDialog={setShowProjectDialog}
                     setSelectedProject={setSelectedProject}
-                    handleEditorDidMount={handleEditorDidMount}
-                    saveConfigHandler={saveConfigHandler}
                     fetchProjects={fetchProjects}
                     setSnackbar={setSnackbar}
-                    isSaving={isSaving}
                   />
                 ))}
             </TableBody>
