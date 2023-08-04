@@ -60,8 +60,9 @@ const Row = (props: {
   };
 
   const showVoltage = () => {
-    if (project.deviceVoltage) {
-      return `${project.deviceVoltage.toLocaleString()} V`;
+    const voltages = project.Voltages[0];
+    if (voltages) {
+      return `${voltages.reading.toLocaleString()} V`;
     } else {
       return "-";
     }
@@ -99,7 +100,7 @@ const Row = (props: {
 
   const handleFormChange = (
     index: number,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value, checked } = event.target;
     const payload = name === "enabled" ? checked : value;
@@ -113,7 +114,7 @@ const Row = (props: {
     setIsSaving(true);
 
     const confsNotEmpty = configs.filter(
-      (conf) => conf.key && conf.label && conf.value
+      (conf) => conf.key && conf.label && conf.value,
     );
 
     fetch("/api/configs", {
@@ -253,7 +254,7 @@ const Row = (props: {
                       onChange={(event) =>
                         handleFormChange(
                           index,
-                          event as ChangeEvent<HTMLInputElement>
+                          event as ChangeEvent<HTMLInputElement>,
                         )
                       }
                     />
@@ -267,7 +268,7 @@ const Row = (props: {
                       onChange={(event) =>
                         handleFormChange(
                           index,
-                          event as ChangeEvent<HTMLInputElement>
+                          event as ChangeEvent<HTMLInputElement>,
                         )
                       }
                     />
@@ -281,7 +282,7 @@ const Row = (props: {
                       onChange={(event) =>
                         handleFormChange(
                           index,
-                          event as ChangeEvent<HTMLInputElement>
+                          event as ChangeEvent<HTMLInputElement>,
                         )
                       }
                     />

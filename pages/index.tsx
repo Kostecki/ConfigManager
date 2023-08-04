@@ -52,7 +52,7 @@ export default function Home() {
           message: "Project updated",
           display: true,
         });
-      })
+      }),
     );
   };
 
@@ -151,7 +151,7 @@ export default function Home() {
                 <TableCell>Project</TableCell>
                 <TableCell>Github</TableCell>
                 <TableCell>Last Fetch</TableCell>
-                <TableCell>Device Voltage</TableCell>
+                <TableCell>Lastest Voltage</TableCell>
                 <TableCell>JSON</TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>
                 <TableCell sx={{ width: 10, p: 0 }}></TableCell>

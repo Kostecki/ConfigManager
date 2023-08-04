@@ -9,11 +9,17 @@ interface Config {
   deleted?: boolean;
 }
 
+interface Voltages {
+  id: number;
+  reading: number;
+  createdAt: string;
+}
+
 interface Project {
   id?: number;
   name: string;
   githubLink: string;
   lastSeen?: string;
   configs?: Config[];
-  deviceVoltage?: number;
+  Voltages: Voltages[];
 }

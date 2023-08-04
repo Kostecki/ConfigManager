@@ -3,11 +3,20 @@ import prisma from "../../../lib/prisma";
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method === "GET") {
     // Get project
-    const projects = await prisma.project.findMany({});
+    const projects = await prisma.project.findMany({
+      include: {
+        Voltages: {
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
+    });
 
     return res.json(projects);
   } else if (req.method === "POST") {

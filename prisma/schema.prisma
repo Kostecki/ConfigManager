@@ -25,5 +25,13 @@ model Project {
   githubLink String?   @db.VarChar(255)
   lastSeen   DateTime? @db.DateTime(0)
   Config     Config[]
-  deviceVoltage    Float?    @db.Float() 
+  Voltages    Voltages[]
+}
+
+model Voltages {
+  id         Int       @id @default(autoincrement())
+  reading    Float
+  createdAt  DateTime  @default(now())
+  projectId  Int
+  Project    Project @relation(fields: [projectId], references: [id])
 }
