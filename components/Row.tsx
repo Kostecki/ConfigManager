@@ -13,8 +13,10 @@ import {
   IconButton,
   Link,
   Switch,
+  Tab,
   TableCell,
   TableRow,
+  Tabs,
   TextField,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -26,6 +28,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteDialog from "@/components/DeleteDialog";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 import UndoIcon from "@mui/icons-material/Undo";
+import VoltageGraph from "./VoltageGraph";
 
 const Row = (props: {
   project: Project;
@@ -177,6 +180,12 @@ const Row = (props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, project.id]);
 
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <>
       <TableRow
@@ -216,106 +225,123 @@ const Row = (props: {
       <TableRow>
         <TableCell colSpan={100} sx={{ m: 5, p: 0 }}>
           <Collapse in={open} timeout="auto">
-            <Box sx={{ py: 2 }}>
-              {configs?.map((config, index) => {
-                const { enabled, key, label, value, id } = config;
+            <Tabs sx={{ mx: 3, my: 2 }} value={value} onChange={handleChange}>
+              <Tab label="Config" />
+              <Tab label="Voltage" />
+            </Tabs>
 
-                return (
+            {value === 0 && (
+              <>
+                <Box sx={{ py: 2 }}>
+                  {configs?.map((config, index) => {
+                    const { enabled, key, label, value, id } = config;
+
+                    return (
+                      <Box
+                        key={index}
+                        component="form"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          my: 1,
+                          mx: 2,
+                          opacity: toBeDeleted.includes(id!) ? "0.6" : 1,
+                          "& .MuiTextField-root": {
+                            m: 1,
+                            width: "calc(100% - 16px)",
+                          },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                      >
+                        <Switch
+                          name="enabled"
+                          checked={enabled}
+                          disabled={toBeDeleted.includes(id!)}
+                          onChange={(event) => handleFormChange(index, event)}
+                        />
+                        <TextField
+                          type="text"
+                          size="small"
+                          name="label"
+                          label="Label"
+                          value={label}
+                          disabled={toBeDeleted.includes(id!)}
+                          onChange={(event) =>
+                            handleFormChange(
+                              index,
+                              event as ChangeEvent<HTMLInputElement>,
+                            )
+                          }
+                        />
+                        <TextField
+                          type="text"
+                          size="small"
+                          name="key"
+                          label="Key"
+                          value={key}
+                          disabled={toBeDeleted.includes(id!)}
+                          onChange={(event) =>
+                            handleFormChange(
+                              index,
+                              event as ChangeEvent<HTMLInputElement>,
+                            )
+                          }
+                        />
+                        <TextField
+                          type="text"
+                          size="small"
+                          name="value"
+                          label="Value"
+                          value={value}
+                          disabled={toBeDeleted.includes(id!)}
+                          onChange={(event) =>
+                            handleFormChange(
+                              index,
+                              event as ChangeEvent<HTMLInputElement>,
+                            )
+                          }
+                        />
+                        <ActionButton id={id} />
+                      </Box>
+                    );
+                  })}
                   <Box
-                    key={index}
-                    component="form"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      my: 1,
-                      mx: 2,
-                      opacity: toBeDeleted.includes(id!) ? "0.6" : 1,
-                      "& .MuiTextField-root": {
-                        m: 1,
-                        width: "calc(100% - 16px)",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
+                    sx={{ display: "flex", justifyContent: "center", pt: 2 }}
                   >
-                    <Switch
-                      name="enabled"
-                      checked={enabled}
-                      disabled={toBeDeleted.includes(id!)}
-                      onChange={(event) => handleFormChange(index, event)}
-                    />
-                    <TextField
-                      type="text"
-                      size="small"
-                      name="label"
-                      label="Label"
-                      value={label}
-                      disabled={toBeDeleted.includes(id!)}
-                      onChange={(event) =>
-                        handleFormChange(
-                          index,
-                          event as ChangeEvent<HTMLInputElement>,
-                        )
-                      }
-                    />
-                    <TextField
-                      type="text"
-                      size="small"
-                      name="key"
-                      label="Key"
-                      value={key}
-                      disabled={toBeDeleted.includes(id!)}
-                      onChange={(event) =>
-                        handleFormChange(
-                          index,
-                          event as ChangeEvent<HTMLInputElement>,
-                        )
-                      }
-                    />
-                    <TextField
-                      type="text"
-                      size="small"
-                      name="value"
-                      label="Value"
-                      value={value}
-                      disabled={toBeDeleted.includes(id!)}
-                      onChange={(event) =>
-                        handleFormChange(
-                          index,
-                          event as ChangeEvent<HTMLInputElement>,
-                        )
-                      }
-                    />
-                    <ActionButton id={id} />
+                    <Button
+                      variant="outlined"
+                      startIcon={<AddCircleIcon />}
+                      onClick={addField}
+                    >
+                      Add Field
+                    </Button>
                   </Box>
-                );
-              })}
-              <Box sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
-                <Button
-                  variant="outlined"
-                  startIcon={<AddCircleIcon />}
-                  onClick={addField}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    px: 3,
+                    pb: 3,
+                  }}
                 >
-                  Add Field
-                </Button>
+                  <LoadingButton
+                    loading={isSaving}
+                    variant="contained"
+                    onClick={saveConfig}
+                  >
+                    Save Config
+                  </LoadingButton>
+                </Box>
+              </>
+            )}
+
+            {value === 1 && project.id && (
+              <Box sx={{ mx: 3, mt: 2, mb: 4 }}>
+                <VoltageGraph projectId={project.id} />
               </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                px: 3,
-                pb: 3,
-              }}
-            >
-              <LoadingButton
-                loading={isSaving}
-                variant="contained"
-                onClick={saveConfig}
-              >
-                Save Config
-              </LoadingButton>
-            </Box>
+            )}
           </Collapse>
         </TableCell>
       </TableRow>

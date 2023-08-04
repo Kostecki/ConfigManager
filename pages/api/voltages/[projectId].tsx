@@ -14,7 +14,7 @@ export default async function handle(
           projectId: parseInt(projectId),
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
       });
 
