@@ -21,5 +21,5 @@ interface Project {
   githubLink: string;
   lastSeen?: string;
   configs?: Config[];
-  Voltages: Voltages[];
+  Voltages?: Voltages[];
 }

@@ -60,9 +60,9 @@ const Row = (props: {
   };
 
   const showVoltage = () => {
-    const voltages = project.Voltages[0];
-    if (voltages) {
-      return `${voltages.reading.toLocaleString()} V`;
+    const voltages = project?.Voltages;
+    if (voltages?.length) {
+      return `${voltages[0].reading.toLocaleString()} V`;
     } else {
       return "-";
     }
