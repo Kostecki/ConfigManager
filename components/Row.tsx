@@ -225,10 +225,12 @@ const Row = (props: {
       <TableRow>
         <TableCell colSpan={100} sx={{ m: 5, p: 0 }}>
           <Collapse in={open} timeout="auto">
-            <Tabs sx={{ mx: 3, my: 2 }} value={value} onChange={handleChange}>
-              <Tab label="Config" />
-              <Tab label="Voltage" />
-            </Tabs>
+            <Box sx={{ mx: 3, my: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Tabs value={value} onChange={handleChange}>
+                <Tab label="Config" />
+                <Tab label="Voltage" />
+              </Tabs>
+            </Box>
 
             {value === 0 && (
               <>
