@@ -20,18 +20,19 @@ model Config {
 }
 
 model Project {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(255)
-  githubLink String?   @db.VarChar(255)
-  lastSeen   DateTime? @db.DateTime(0)
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(255)
+  githubLink String?    @db.VarChar(255)
+  lastSeen   DateTime?  @db.DateTime(0)
+  battery    Boolean    @default(false)
   Config     Config[]
-  Voltages    Voltages[]
+  Voltages   Voltages[]
 }
 
 model Voltages {
-  id         Int       @id @default(autoincrement())
-  reading    Float
-  createdAt  DateTime  @default(now())
-  projectId  Int
-  Project    Project @relation(fields: [projectId], references: [id])
+  id        Int      @id @default(autoincrement())
+  reading   Float
+  createdAt DateTime @default(now())
+  projectId Int
+  Project   Project  @relation(fields: [projectId], references: [id])
 }

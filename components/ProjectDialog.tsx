@@ -6,6 +6,9 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 export default function CreateProjectDialog(props: {
@@ -27,14 +30,19 @@ export default function CreateProjectDialog(props: {
 
   const [name, setName] = useState("");
   const [githubLink, setGithubLink] = useState("");
+  const [battery, setBattery] = useState(false);
 
   const saveHandler = () => {
     if (selectedProject) {
-      editProjectHandler({ ...selectedProject, name, githubLink });
+      const data = selectedProject;
+      delete selectedProject.Voltages;
+
+      editProjectHandler({ ...data, name, githubLink, battery });
     } else {
       createProjectHandler({
         name,
         githubLink,
+        battery,
       });
     }
   };
@@ -42,6 +50,7 @@ export default function CreateProjectDialog(props: {
   const closeHandler = () => {
     setName("");
     setGithubLink("");
+    setBattery(false);
 
     setSelectedProject(undefined);
     setShowProjectDialog(false);
@@ -50,6 +59,7 @@ export default function CreateProjectDialog(props: {
   useEffect(() => {
     setName(selectedProject?.name ?? "");
     setGithubLink(selectedProject?.githubLink ?? "");
+    setBattery(selectedProject?.battery ?? false);
   }, [selectedProject]);
 
   return (
@@ -83,9 +93,22 @@ export default function CreateProjectDialog(props: {
             setGithubLink(event.target.value)
           }
         />
+        <FormGroup sx={{ mt: 2 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={battery}
+                onChange={(e) => setBattery(e.target.checked)}
+              />
+            }
+            label="Battery-project"
+          />
+        </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={saveHandler}>Create</Button>
+        <Button onClick={saveHandler}>
+          {selectedProject ? "Save" : "Create"}
+        </Button>
       </DialogActions>
     </Dialog>
   );

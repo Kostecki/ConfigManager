@@ -15,6 +15,7 @@ import {
   LinearProgress,
   Snackbar,
 } from "@mui/material";
+import BoltIcon from "@mui/icons-material/Bolt";
 import Row from "@/components/Row";
 import ProjectDialog from "@/components/ProjectDialog";
 
@@ -148,6 +149,9 @@ export default function Home() {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
+                <TableCell>
+                  <BoltIcon />
+                </TableCell>
                 <TableCell>Project</TableCell>
                 <TableCell>Github</TableCell>
                 <TableCell>Last Fetch</TableCell>

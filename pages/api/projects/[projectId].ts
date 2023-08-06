@@ -41,7 +41,7 @@ export default async function handle(
     }
   } else if (req.method === "PUT") {
     // Update  project
-    const inputProject = req.body;
+    const inputProject = JSON.parse(req.body);
 
     if (inputProject.id) {
       try {
@@ -59,7 +59,7 @@ export default async function handle(
           return res.json([]);
         } else {
           return res.json({
-            errorMsg: "Something went wrong 🤷‍♂️",
+            errorMsg: e,
           });
         }
       }

@@ -28,6 +28,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteDialog from "@/components/DeleteDialog";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 import UndoIcon from "@mui/icons-material/Undo";
+import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
+import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
 import VoltageGraph from "./VoltageGraph";
 
 const Row = (props: {
@@ -196,6 +198,13 @@ const Row = (props: {
         hover
         onClick={rowClick}
       >
+        <TableCell component="th">
+          {project.battery ? (
+            <BatteryChargingFullIcon />
+          ) : (
+            <ElectricalServicesIcon />
+          )}
+        </TableCell>
         <TableCell component="th">{project.name}</TableCell>
         <TableCell component="th">
           <Link href={project.githubLink} target="_blank">

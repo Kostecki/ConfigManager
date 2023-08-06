@@ -19,6 +19,7 @@ interface Project {
   id?: number;
   name: string;
   githubLink: string;
+  battery: boolean;
   lastSeen?: string;
   configs?: Config[];
   Voltages?: Voltages[];
