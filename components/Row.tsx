@@ -212,7 +212,9 @@ const Row = (props: {
           </Link>
         </TableCell>
         <TableCell>
-          {dayjs(project.lastSeen).format("DD-MM-YYYY, HH:mm") ?? "-"}
+          {project.lastSeen
+            ? dayjs(project.lastSeen).format("DD-MM-YYYY, HH:mm")
+            : "-"}
         </TableCell>
         <TableCell>{showVoltage()}</TableCell>
         <TableCell component="th" sx={{ p: 1 }}>
