@@ -7,6 +7,6 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile --prod
 
 COPY . .
 
-RUN npm run build
+RUN pnpm build
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
