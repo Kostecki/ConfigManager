@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1748870663707,
+      "tag": "0000_sparkling_nitro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1748870703179,
+      "tag": "0001_luxuriant_zaladane",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1748870748165,
+      "tag": "0002_fast_xavin",
+      "breakpoints": true
+    }
+  ]
+}
