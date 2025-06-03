@@ -40,8 +40,14 @@ export default function ProjectsTable({ projects }: InputProps) {
 	};
 
 	const rows = projects.flatMap((project) => {
-		const { id, batteryProject, name, repoLink, lastSeen } = project;
+		const { id, batteryProject, name, repoLink } = project;
 		const isBatteryProject = Boolean(batteryProject);
+
+		let lastSeen = project.lastSeen;
+		if (batteryProject && "voltages" in project) {
+			const full = project as SelectProjectsFull;
+			lastSeen = full.voltages.at(-1)?.createdAt ?? lastSeen;
+		}
 
 		return [
 			<Table.Tr
