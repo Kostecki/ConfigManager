@@ -58,8 +58,6 @@ export default function EditProject({ project }: InputProps) {
 
 	useEffect(() => {
 		if (fetcher.state === "idle" && fetcher.data) {
-			console.log(fetcher.data);
-
 			if (fetcher.data.status === "success") {
 				showNotification({
 					message: fetcher.data.message,

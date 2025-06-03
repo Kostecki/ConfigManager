@@ -1,4 +1,4 @@
-import { eq, type InferInsertModel } from "drizzle-orm";
+import { eq, desc, type InferInsertModel } from "drizzle-orm";
 
 import { db } from "./config.server";
 import { keyValuePairs, projects, voltages } from "./schema.server";
@@ -78,7 +78,6 @@ export const editProject = async (projectUpdate: ProjectUpdate) => {
 
 export const deleteProject = async (projectId: number) => {
   try {
-    console.log("Deleting project with ID:", projectId);
     await deleteKeyValuePairs(projectId);
     await deleteVoltageReadings(projectId);
     await db.delete(projects).where(eq(projects.id, projectId));
@@ -148,8 +147,6 @@ export const editKeyValuePair = async (kvUpdate: KeyValueUpdate) => {
 };
 
 export const deleteKeyValuePairs = async (projectId: number) => {
-  console.log("Deleting key-value pairs for project ID:", projectId);
-
   try {
     await db
       .delete(keyValuePairs)
@@ -162,6 +159,21 @@ export const deleteKeyValuePairs = async (projectId: number) => {
   } catch (error) {
     console.error("Error deleting key-value pairs:", error);
     return { status: "error", message: "Error deleting key-value pairs." };
+  }
+};
+
+export const getVoltageReadings = async (projectId: number) => {
+  try {
+    const voltagesData = await db
+      .select()
+      .from(voltages)
+      .where(eq(voltages.projectId, projectId))
+      .orderBy(desc(voltages.createdAt));
+
+    return voltagesData;
+  } catch (error) {
+    console.error("Error fetching voltage readings:", error);
+    return [];
   }
 };
 
@@ -180,8 +192,6 @@ export const createVoltageReadings = async (data: InsertVoltages) => {
 };
 
 export const deleteVoltageReadings = async (projectId: number) => {
-  console.log("Deleting voltage readings for project ID:", projectId);
-
   try {
     await db.delete(voltages).where(eq(voltages.projectId, projectId));
 

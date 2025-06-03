@@ -1,4 +1,4 @@
-import { createVoltageReadings } from "~/database/utils";
+import { createVoltageReadings, getVoltageReadings } from "~/database/utils";
 import type { Route } from "./+types";
 
 export async function action({ request, params }: Route.ActionArgs) {
@@ -15,4 +15,11 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
 
   return await createVoltageReadings(data);
+}
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const { projectId } = params;
+  const parsedProjectId = Number.parseInt(projectId ?? "", 10);
+
+  return await getVoltageReadings(parsedProjectId);
 }
