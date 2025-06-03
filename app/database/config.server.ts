@@ -20,7 +20,9 @@ export const db = drizzle(new Database(DATABASE_PATH), {
 });
 
 const setupDatabase = async () => {
+  console.log();
   console.log("Setting up the database...");
+  console.log();
 
   migrate(db, {
     migrationsFolder: MIGRATIONS_PATH,
