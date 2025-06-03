@@ -8,4 +8,6 @@
 # SQLite
 *.db
 
+.env
+
 public/.well-known/appspecific/com.chrome.devtools.json
