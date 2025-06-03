@@ -1,4 +1,4 @@
-FROM node:24
+FROM node:24-slim
 
 # Enable pnpm with corepack
 RUN corepack enable && corepack prepare pnpm@latest --activate
