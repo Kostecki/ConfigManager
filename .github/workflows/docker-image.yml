@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Get latest commit hash and message
+        id: commit_info
+        run: |
+          echo "COMMIT_HASH=$(git log -1 --pretty=format:"%h")" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -46,3 +51,6 @@ jobs:
             ${{ steps.meta.outputs.tags }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_LATEST_COMMIT_HASH=${{ env.COMMIT_HASH }}
+            VITE_LATEST_COMMIT_MESSAGE=${{ env.COMMIT_MESSAGE }}
