@@ -1,56 +1,22 @@
-# Base image with Ubuntu
-FROM node:18 AS base
-
-# Install dependencies only when needed
-FROM base AS deps
+FROM node:20-alpine AS development-dependencies-env
+COPY . /app
 WORKDIR /app
+RUN npm ci
 
-# Install necessary system dependencies
-RUN apt-get update && \
-    apt-get install -y curl gnupg && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy lockfiles and install dependencies
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-COPY prisma ./prisma
-
-RUN \
-  if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm install --frozen-lockfile; \
-  else echo "No lockfile found. Exiting." && exit 1; \
-  fi
-
-RUN npm install -g prisma
-RUN prisma generate
-
-# Rebuild the source code only when needed
-FROM base AS builder
+FROM node:20-alpine AS production-dependencies-env
+COPY ./package.json package-lock.json /app/
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+RUN npm ci --omit=dev
 
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN yarn build
-
-# Final production image
-FROM base AS runner
+FROM node:20-alpine AS build-env
+COPY . /app/
+COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
+RUN npm run build
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-
-# Add user for security
-RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-CMD ["node", "server.js"]
+FROM node:20-alpine
+COPY ./package.json package-lock.json /app/
+COPY --from=production-dependencies-env /app/node_modules /app/node_modules
+COPY --from=build-env /app/build /app/build
+WORKDIR /app
+CMD ["npm", "run", "start"]
