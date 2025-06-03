@@ -1,38 +1,22 @@
-# ---------- Stage 1: Build stage ----------
-FROM node:24-slim AS build
+FROM node:24
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y \
-  python3 \
-  make \
-  g++ \
-  pkg-config \
-  libsqlite3-dev \
-  && rm -rf /var/lib/apt/lists/*
-
-# Enable pnpm
+# Enable pnpm with corepack
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# Copy only the files needed for install first (for caching)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Install dependencies
 RUN pnpm install --frozen-lockfile
 
+# Copy the rest of your source code
 COPY . .
 
-# Build your app (transpile TypeScript etc.)
+# Build your app
 RUN pnpm build
 
-# ---------- Stage 2: Runtime stage ----------
-FROM node:24-slim
-
-# Enable pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-WORKDIR /app
-
-# Copy only the built app and node_modules from build stage
-COPY --from=build /app /app
-
+# Set environment and start
 ENV NODE_ENV=production
 CMD ["pnpm", "start"]
