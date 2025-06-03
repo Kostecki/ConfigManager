@@ -8,20 +8,26 @@ import {
 	Tabs,
 	Text,
 } from "@mantine/core";
-import { IconBatteryVertical4, IconLink, IconPlug } from "@tabler/icons-react";
+import {
+	IconBatteryVertical4,
+	IconLink,
+	IconPlug,
+	IconRefresh,
+} from "@tabler/icons-react";
 import { useState } from "react";
+import { useRevalidator } from "react-router";
 
 import dayjs from "~/utils/dayjs";
 
 import DeleteProject from "./DeleteProject";
 import EditProject from "./EditProject";
 import KeyValuesForm from "./KeyValuesForm";
+import VoltageGraph from "./VoltageGraph";
 
 import type {
 	SelectProjects,
 	SelectProjectsFull,
 } from "~/database/schema.types";
-import VoltageGraph from "./VoltageGraph";
 
 type InputProps = {
 	projects: SelectProjects[] | SelectProjectsFull[];
@@ -30,6 +36,8 @@ type InputProps = {
 export default function ProjectsTable({ projects }: InputProps) {
 	const [openRow, setOpenRow] = useState<number | null>(null);
 	const [activeTab, setActiveTab] = useState<string | null>("config");
+
+	const { revalidate } = useRevalidator();
 
 	const toggleRow = (id: number) => {
 		setOpenRow((prev) => (prev === id ? null : id));
@@ -119,6 +127,7 @@ export default function ProjectsTable({ projects }: InputProps) {
 							value={isBatteryProject ? activeTab : "config"}
 							onChange={setActiveTab}
 							p="md"
+							pos="relative"
 						>
 							<Tabs.List>
 								<Tabs.Tab value="config" style={{ fontWeight: "bold" }}>
@@ -139,6 +148,16 @@ export default function ProjectsTable({ projects }: InputProps) {
 									<VoltageGraph project={project} />
 								</Tabs.Panel>
 							)}
+
+							<Box pos="absolute" top={0} right={0} p="md">
+								<ActionIcon
+									variant="subtle"
+									color="black"
+									onClick={() => revalidate()}
+								>
+									<IconRefresh size={16} />
+								</ActionIcon>
+							</Box>
 						</Tabs>
 					</Collapse>
 				</Table.Td>
