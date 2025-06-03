@@ -79,7 +79,9 @@ export default function ProjectsTable({ projects }: InputProps) {
 				</Table.Td>
 
 				<Table.Td>
-					{lastSeen ? dayjs(lastSeen).format("DD-MM-YYYY, HH:mm") : "Never"}
+					{lastSeen
+						? dayjs.utc(lastSeen).local().format("DD-MM-YYYY, HH:mm")
+						: "Never"}
 				</Table.Td>
 
 				<Table.Td>

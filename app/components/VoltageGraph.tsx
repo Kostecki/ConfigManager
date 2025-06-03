@@ -3,6 +3,7 @@ import type {
 	SelectProjects,
 	SelectProjectsFull,
 } from "~/database/schema.types";
+import dayjs from "~/utils/dayjs";
 
 type InputProps = {
 	project: SelectProjects | SelectProjectsFull;
@@ -41,7 +42,11 @@ export default function VoltageGraph({ project }: InputProps) {
 			},
 			[] as typeof voltages,
 		)
-		.map((v) => ({ ...v, reading: v.reading.toFixed(3) }));
+		.map((v) => ({
+			...v,
+			reading: v.reading.toFixed(3),
+			createdAt: dayjs.utc(v.createdAt).local().format("YYYY-MM-DD HH:mm:ss"),
+		}));
 
 	const readings = downsampledVoltages.map((v) => Number(v.reading));
 	const maxReading = Math.max(...readings);
@@ -66,6 +71,7 @@ export default function VoltageGraph({ project }: InputProps) {
 					color: "red.6",
 				},
 			]}
+			unit=" V"
 			my="lg"
 		/>
 	);
