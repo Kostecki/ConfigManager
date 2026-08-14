@@ -122,7 +122,7 @@ export default function ProjectsTable({ projects }: InputProps) {
 
 			<Table.Tr key={`details-${id}`}>
 				<Table.Td colSpan={7} style={{ padding: 0 }}>
-					<Collapse in={openRow === id} transitionDuration={200}>
+					<Collapse expanded={openRow === id} transitionDuration={200}>
 						<Tabs
 							value={isBatteryProject ? activeTab : "config"}
 							onChange={setActiveTab}

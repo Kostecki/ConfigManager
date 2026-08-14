@@ -22,26 +22,40 @@ type InputProps = {
 	project: SelectProjects | SelectProjectsFull;
 };
 
+type FieldValue = {
+	id?: number;
+	label: string;
+	key: string;
+	value: string;
+	enabled: boolean;
+	markedForDeletion: boolean;
+};
+
 export default function KeyValuesForm({ project }: InputProps) {
 	const [loading, setLoading] = useState(false);
 
-	if (!("keyValuePairs" in project) || !project.keyValuePairs) {
-		console.warn("No keyValuePairs found in project:", project);
-		return null;
-	}
+	const keyValuePairs =
+		"keyValuePairs" in project ? project.keyValuePairs : undefined;
 
 	const form = useForm({
 		initialValues: {
-			fields: (project.keyValuePairs ?? []).map((kv) => ({
-				id: kv.id,
-				label: kv.label,
-				key: kv.key,
-				value: kv.value,
-				enabled: kv.enabled ?? false,
-				markedForDeletion: false,
-			})),
+			fields: (keyValuePairs ?? []).map(
+				(kv): FieldValue => ({
+					id: kv.id,
+					label: kv.label,
+					key: kv.key,
+					value: kv.value,
+					enabled: kv.enabled ?? false,
+					markedForDeletion: false,
+				}),
+			),
 		},
 	});
+
+	if (!keyValuePairs) {
+		console.warn("No keyValuePairs found in project:", project);
+		return null;
+	}
 
 	const addField = () => {
 		form.insertListItem("fields", {

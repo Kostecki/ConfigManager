@@ -21,7 +21,7 @@ export async function action({ params }: Route.ActionArgs) {
       .set({ lastSeen: new Date().toISOString() })
       .where(eq(projects.id, Number(projectId)));
 
-    if (result.rowsAffected === 0) {
+    if (result.changes === 0) {
       return {
         status: "error",
         message: "No project found with the provided ID.",
