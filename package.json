@@ -13,7 +13,7 @@
     "lint": "biome lint ."
   },
   "dependencies": {
-    "@libsql/client": "0.17.4",
+    "@libsql/client": "0.18.0",
     "@mantine/charts": "9.6.0",
     "@mantine/core": "9.6.0",
     "@mantine/form": "9.6.0",
