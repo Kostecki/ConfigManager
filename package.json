@@ -33,14 +33,14 @@
     "recharts": "3.10.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.11",
+    "@biomejs/biome": "2.5.12",
     "@react-router/dev": "8.3.1",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "26.4.1",
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.5",
+    "@types/react-dom": "19.2.7",
     "drizzle-kit": "0.31.10",
-    "postcss": "8.5.26",
+    "postcss": "8.5.28",
     "postcss-preset-mantine": "1.18.0",
     "postcss-simple-vars": "7.0.1",
     "tsx": "4.23.13",
