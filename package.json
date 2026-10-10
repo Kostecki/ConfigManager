@@ -14,17 +14,17 @@
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
-    "@mantine/charts": "9.7.0",
-    "@mantine/core": "9.7.0",
-    "@mantine/form": "9.7.0",
-    "@mantine/hooks": "9.7.0",
-    "@mantine/notifications": "9.7.0",
+    "@mantine/charts": "9.7.1",
+    "@mantine/core": "9.7.1",
+    "@mantine/form": "9.7.1",
+    "@mantine/hooks": "9.7.1",
+    "@mantine/notifications": "9.7.1",
     "@react-router/node": "8.4.0",
     "@react-router/serve": "8.4.0",
     "@tabler/icons-react": "3.49.0",
     "better-sqlite3": "13.0.3",
     "dayjs": "1.11.23",
-    "dotenv": "18.0.5",
+    "dotenv": "18.0.6",
     "drizzle-orm": "0.45.3",
     "isbot": "5.2.2",
     "react": "19.3.0",
@@ -45,7 +45,7 @@
     "postcss-simple-vars": "7.0.1",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.2",
+    "vite": "8.3.3",
     "vite-tsconfig-paths": "6.1.1"
   }
 }
