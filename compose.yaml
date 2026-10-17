@@ -4,8 +4,8 @@ services:
     image: ghcr.io/kostecki/config-manager:latest
     container_name: config-manager
     ports:
-      - 3006:3000
-    hostname: config-manager-docker-tower
+      - ${APP_PORT:-3000}:3000
+    hostname: ${APP_HOSTNAME:-config-manager}
     environment:
       DATABASE_PATH: ${DATABASE_PATH}
       MIGRATIONS_PATH: ${MIGRATIONS_PATH}
