@@ -1,0 +1,14 @@
+services:
+  app:
+    restart: unless-stopped
+    image: ghcr.io/kostecki/config-manager:latest
+    container_name: config-manager
+    ports:
+      - 3006:3000
+    hostname: config-manager-docker-tower
+    environment:
+      DATABASE_PATH: ${DATABASE_PATH}
+      MIGRATIONS_PATH: ${MIGRATIONS_PATH}
+    volumes:
+      - ${DATA_DIR:-.}/data/database:/app/app/database
+      - /etc/localtime:/etc/localtime:ro
