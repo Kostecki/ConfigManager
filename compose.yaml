@@ -5,7 +5,7 @@ services:
     container_name: config-manager
     ports:
       - ${APP_PORT:-3000}:3000
-    hostname: ${APP_HOSTNAME:-config-manager}
+    hostname: config-manager
     environment:
       DATABASE_PATH: ${DATABASE_PATH}
       MIGRATIONS_PATH: ${MIGRATIONS_PATH}
