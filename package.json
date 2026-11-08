@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
-    "@mantine/charts": "9.7.4",
-    "@mantine/core": "9.7.4",
-    "@mantine/form": "9.7.4",
-    "@mantine/hooks": "9.7.4",
-    "@mantine/notifications": "9.7.4",
+    "@mantine/charts": "9.7.5",
+    "@mantine/core": "9.7.5",
+    "@mantine/form": "9.7.5",
+    "@mantine/hooks": "9.7.5",
+    "@mantine/notifications": "9.7.5",
     "@react-router/node": "8.5.1",
     "@react-router/serve": "8.5.1",
     "@tabler/icons-react": "3.50.0",
@@ -33,7 +33,7 @@
     "recharts": "3.10.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.4",
+    "@biomejs/biome": "2.6.5",
     "@react-router/dev": "8.5.1",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "26.6.6",
