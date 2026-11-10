@@ -1,4 +1,15 @@
-.react-router
-build
+# Dependencies and build output are created inside the image
 node_modules
+build
+.react-router
+
+# Local data, secrets and repo files
+app/database/data.db
+.env
+.env.*
+.git
+.github
+.vscode
+.claude
+.DS_Store
 README.md
