@@ -1,6 +1,7 @@
 {
   "name": "config-manager",
   "private": true,
+  "packageManager": "pnpm@12.18.0",
   "type": "module",
   "scripts": {
     "build": "react-router build",
@@ -13,7 +14,6 @@
     "lint": "biome lint ."
   },
   "dependencies": {
-    "@libsql/client": "0.18.0",
     "@mantine/charts": "9.7.5",
     "@mantine/core": "9.7.5",
     "@mantine/form": "9.7.5",
