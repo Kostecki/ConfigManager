@@ -11,7 +11,11 @@ env:
   IMAGE_NAME: kostecki/config-manager
 
 jobs:
+  check:
+    uses: ./.github/workflows/ci.yml
+
   build-and-push-image:
+    needs: check
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -1,6 +1,7 @@
 {
   "name": "config-manager",
   "private": true,
+  "packageManager": "pnpm@12.18.0",
   "type": "module",
   "scripts": {
     "build": "react-router build",
