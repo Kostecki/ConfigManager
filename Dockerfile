@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- base: pnpm from the packageManager field in package.json ----
-FROM node:26.13.0-alpine AS base
+FROM node:26.13.1-alpine AS base
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN npm install -g "$(node -p "require('./package.json').packageManager")" && npm cache clean --force
@@ -28,7 +28,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
   pnpm install --frozen-lockfile --prod --store-dir=/pnpm/store
 
 # ---- runtime ----
-FROM node:26.13.0-alpine AS runtime
+FROM node:26.13.1-alpine AS runtime
 # tini as PID 1: forwards signals and reaps zombies
 RUN apk add --no-cache tini
 
